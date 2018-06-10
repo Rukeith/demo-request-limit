@@ -1,0 +1,34 @@
+version: "3.5"
+services:
+  redis:
+    image: redis
+    container_name: demo-redis
+    networks:
+      - demo-network
+    ports:
+      - 6379:6379
+
+  server:
+    build: ./
+    container_name: server
+    networks:
+      - demo-network
+    depends_on:
+      - redis
+    ports:
+      - 3000:3000
+
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile-test
+    container_name: test
+    networks:
+      - demo-network
+    depends_on:
+      - redis
+      - server
+
+networks:
+  demo-network:
+    name: demo-network
