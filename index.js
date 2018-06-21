@@ -1,20 +1,18 @@
 const Koa = require('koa');
 const Redis = require('ioredis');
-const ratelimit = require('koa-ratelimit');
+const limit = require('./limit.js');
 const app = new Koa();
 
-app.use(ratelimit({
+app.use(limit({
   max: 60,
   db: new Redis(6379, process.env.NODE_ENV === 'docker' ? 'demo-redis' : 'localhost'),
   duration: 60000, // 1 min
-  id: (ctx) => ctx.ip,
   errorMessage: 'Error',
   headers: {
     remaining: 'Rate-Limit-Remaining',
     reset: 'Rate-Limit-Reset',
     total: 'Rate-Limit-Total'
-  },
-  disableHeader: false,
+  }
 }));
 
 app.use(async (ctx) => {
