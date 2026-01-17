@@ -10,7 +10,7 @@
   "license": "MIT",
   "dependencies": {
     "ioredis": "^3.2.2",
-    "koa": "^2.5.1"
+    "koa": "^3.0.1"
   },
   "devDependencies": {
     "nodemon": "^1.17.5",
